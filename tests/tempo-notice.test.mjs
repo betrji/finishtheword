@@ -1,0 +1,30 @@
+import fs from 'node:fs';
+import Module,{createRequire} from 'node:module';
+import ts from 'typescript';
+import assert from 'node:assert/strict';
+import {mock} from 'node:test';
+const require=createRequire(import.meta.url);
+for(const ext of ['.ts','.tsx'])Module._extensions[ext]=(m,file)=>m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2023,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,file);
+const React=require('react'),{default:Notice,secondsLost}=require('../app/tempo-notice.tsx');
+const base={matchId:'one',duration:15000,round:0,active:true};
+assert.equal(secondsLost(undefined,base),0);assert.equal(secondsLost(base,{...base,duration:14000,round:1}),1);
+assert.equal(secondsLost(base,{...base,duration:13000,round:2}),2);
+for(const next of [{...base},{...base,duration:14000},{...base,matchId:'new',duration:14000,round:1},{...base,duration:15000,round:1},{...base,active:false,duration:14000,round:1}])assert.equal(secondsLost(base,next),0);
+assert.equal(secondsLost({...base,duration:5000,round:10},{...base,duration:5000,round:11}),0,'No notice at the existing clock floor');
+const original={useState:React.useState,useRef:React.useRef,useEffect:React.useEffect};
+let state,ref={current:undefined},deps,cleanup,runEffect;
+React.useState=initial=>{if(state===undefined)state=initial;return[state,value=>{state=value}]};
+React.useRef=()=>ref;
+React.useEffect=(fn,next)=>{if(!deps||next.some((v,i)=>v!==deps[i])){cleanup?.();deps=next;runEffect=fn}};
+const render=props=>{const tree=Notice.type(props);if(runEffect){const fn=runEffect;runEffect=null;cleanup=fn()}return tree};
+try{
+ mock.timers.enable({apis:['setTimeout']});render(base);assert.equal(state,null);
+ const faster={...base,round:1,duration:14000};render(faster);assert.equal(state.seconds,1);const announced=state;render({...faster});assert.equal(state,announced,'Regular polls do not repeat the announcement');
+ mock.timers.tick(1800);assert.equal(state,null,'Floating feedback clears without changing the turn');
+ render({...faster,round:2,duration:13000});assert.equal(state.seconds,1);
+ render({...base,matchId:'new'});assert.equal(state,null,'A new match never inherits a reduction');
+ render({...base,matchId:'new',round:1,duration:14000});assert.equal(state.seconds,1);render({...base,active:false,matchId:'new',round:1,duration:14000});assert.equal(state,null);
+ const css=fs.readFileSync('app/arena-experience.css','utf8');assert(css.includes('prefers-reduced-motion:reduce'));assert(css.includes('html[data-motion=reduced] .tempo-hit'));assert(css.includes('pointer-events:none'));
+ const source=fs.readFileSync('app/tempo-notice.tsx','utf8');assert(source.includes('aria-live="polite"'));assert(!source.includes('setInterval'));assert(!source.includes('fetch('));
+ console.log('PASS: actual 1s/2s reductions, no mount/reconnect/cap/new-match false alerts, one announcement per reduction, timed cleanup, reduced-motion rules, and no timer mutation.');
+}finally{cleanup?.();mock.timers.reset();Object.assign(React,original)}

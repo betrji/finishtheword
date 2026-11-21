@@ -1,0 +1,42 @@
+import fs from 'node:fs';
+import Module,{createRequire} from 'node:module';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+const require=createRequire(import.meta.url);
+for(const ext of ['.ts','.tsx'])Module._extensions[ext]=(m,file)=>m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2023,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,file);
+const React=require('react'),original={useState:React.useState,useRef:React.useRef,useEffect:React.useEffect};
+const Tutorial=require('../app/first-game-tutorial.tsx').default,{tutorialAnswer}=require('../app/first-game-tutorial.tsx');
+let values=[],refs=[],effects=[],cursor=0,refCursor=0,effectCursor=0,pending=[],tree,done=0,cancelled=0,focused='',selected=0,now=0,nextTimer=0;
+const timers=new Map(),originalInterval=globalThis.setInterval,originalClear=globalThis.clearInterval,originalNow=Date.now;
+globalThis.setInterval=fn=>{const id=++nextTimer;timers.set(id,fn);return id};globalThis.clearInterval=id=>timers.delete(id);Date.now=()=>now;
+globalThis.document={activeElement:null};
+React.useState=initial=>{const i=cursor++;if(!(i in values))values[i]=typeof initial==='function'?initial():initial;return[values[i],v=>values[i]=typeof v==='function'?v(values[i]):v]};
+React.useRef=initial=>refs[refCursor++]??=( {current:initial} );
+React.useEffect=(fn,deps)=>{const i=effectCursor++,old=effects[i];if(!old||deps.some((v,j)=>v!==old.deps[j]))pending.push(()=>{old?.cleanup?.();effects[i]={deps,cleanup:fn()}})};
+const nodes=node=>!node||typeof node!=='object'?[]:[node,...React.Children.toArray(node.props?.children).flatMap(nodes)];
+const text=node=>typeof node==='string'||typeof node==='number'?String(node):React.Children.toArray(node?.props?.children).map(text).join('');
+function render(){cursor=0;refCursor=0;effectCursor=0;pending=[];tree=Tutorial({standalone:true,onDone(){done++},onCancel(){cancelled++}});for(const node of nodes(tree)){if(node.props?.ref&&typeof node.props.ref==='object')node.props.ref.current={focus(){focused=node.props.id||node.type},select(){selected++},querySelectorAll(){return[]},addEventListener(){},removeEventListener(){},getClientRects(){return[{}]}}}pending.forEach(fn=>fn());return tree}
+const button=label=>nodes(tree).find(node=>node.type==='button'&&text(node).includes(label));
+const click=label=>{const node=button(label);assert(node,'Missing '+label);assert(!node.props.disabled,'Disabled '+label);node.props.onClick();render()};
+const field=()=>nodes(tree).find(node=>node.type==='input');
+const feedback=()=>text(nodes(tree).find(node=>node.props?.id==='tutorial-feedback'));
+const submit=value=>{field().props.onChange({target:{value}});render();nodes(tree).find(node=>node.type==='form').props.onSubmit({preventDefault(){}});render()};
+try{
+ render();assert(text(tree).includes('Play ECHO'));assert(button('Next: clock').props.disabled);assert.equal(timers.size,0,'No countdown on entry');
+ click('Fill ECHO');assert.equal(field().props.value,'ECHO');assert.equal(focused,'tutorial-word');
+ submit('apple');assert(feedback().includes('Already played'));assert.equal(field().props['aria-invalid'],true);assert(selected>0);assert.equal(focused,'tutorial-word');
+ submit(' echo ');assert(feedback().startsWith('Accepted'));assert.equal(field().props.readOnly,true);assert(!button('Next: clock').props.disabled);
+ click('Next: clock');assert.equal(focused,'tutorial-title');assert.equal(timers.size,0);
+ click('Watch the timer');assert.equal(timers.size,1);assert(nodes(tree).some(n=>n.props?.className==='lesson-seconds'&&n.props['aria-live']==='off'));
+ now=3000;[...timers.values()].forEach(fn=>fn());render();assert.equal(timers.size,0);assert(feedback().includes('One heart left'));assert(nodes(tree).some(n=>n.props?.['aria-label']==='1 hearts remaining'));
+ click('Next: repeats');click('Try the repeat');assert(feedback().includes('Already played. Try EAGLE.'));assert(!field().props.readOnly);
+ submit('EAGLE');assert(feedback().startsWith('Accepted'));click('Next: prefixes');
+ submit('apple');assert(feedback().includes('Start with AG'));click('Fill AGAIN');assert.equal(field().props.value,'AGAIN');submit('again');assert(feedback().includes('matched both letters'));click('Let’s play');assert.equal(done,1);
+ click('Back');assert(text(tree).includes('New turn. New word.'));assert.equal(field().props.value,'');assert(button('Next: prefixes').props.disabled);
+ click('Back');click('Watch the timer');assert.equal(timers.size,1);click('Got it, skip demo');assert.equal(timers.size,0,'Timer cleaned up when skipping');
+ click('Skip tutorial');assert.equal(done,2);nodes(tree).find(n=>n.props?.['aria-label']==='Close tutorial').props.onClick();assert.equal(cancelled,1);
+ assert(tutorialAnswer(0,'elephant').includes('For this practice'));assert(tutorialAnswer(0,'').includes('hint'));assert(!tutorialAnswer(3,'ag').startsWith('Accepted'));
+ const css=fs.readFileSync('app/onboarding.css','utf8');assert(css.includes('prefers-reduced-motion:reduce'));assert(css.includes('html[data-motion=reduced]'));assert(css.includes('@media(max-width:480px)'));assert(css.includes('font-size:16px'));assert(!fs.readFileSync('app/first-game-tutorial.tsx','utf8').includes('fetch('));
+ const home=fs.readFileSync('app/page.tsx','utf8');assert(home.includes('sound={sound} onToggleSound={toggleSound}'));assert(home.indexOf('<MenuPlayButton')<home.indexOf('className="quick-settings"'));assert(home.includes('<ArenaWelcome '));assert(home.includes("onTutorial={()=>setPendingTutorial('preview')}"));const welcome=require('../app/arena-welcome.tsx').default;let opened=0;const welcomeTree=welcome({avatar:{},name:'Learner',setup:null,onCustomize(){},onTutorial(){opened++},onRules(){}});const guidedRound=nodes(welcomeTree).find(n=>n.type==='button'&&text(n).includes('Play a guided round'));assert(guidedRound,'The current menu exposes the guided round');guidedRound.props.onClick();assert.equal(opened,1);
+ console.log('PASS: guided entry, hint focus, invalid retry, acceptance, all four lessons, silent countdown, heart loss, timer cleanup, Back/Skip/Close/Done, existing sound binding, and narrow/reduced-motion style guards. Simulated interactions, not browser layout.');
+}finally{effects.forEach(e=>e?.cleanup?.());Object.assign(React,original);globalThis.setInterval=originalInterval;globalThis.clearInterval=originalClear;Date.now=originalNow;delete globalThis.document}

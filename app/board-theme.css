@@ -1,0 +1,275 @@
+/* Paper, ink, and game pieces. Shared finishes for every screen. */
+:root{--radius-control:6px;--radius-panel:10px;--paper-rule:color-mix(in srgb,var(--line) 50%,transparent)}
+body,body:has(.home-screen){background:var(--canvas);background-image:none}
+.lucide{stroke-width:1.7}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.panel,.community-board{border:1px solid var(--line);border-radius:var(--radius-panel);box-shadow:none}
+.mini-label,.side-title,.tag,.panel-top{letter-spacing:0;font-size:13px}
+.primary,.secondary{border-radius:var(--radius-control)}
+.secondary{background:var(--surface);box-shadow:0 2px 0 var(--shadow)}
+.secondary:hover:not(:disabled){background:var(--surface-soft)}
+.primary:not(.menu-play){box-shadow:0 3px 0 var(--green-dark)}
+.primary:active:not(.menu-play){box-shadow:0 1px 0 var(--green-dark)}
+.text-button{font-size:12px;text-underline-offset:4px}
+.modal-backdrop{background:var(--veil);backdrop-filter:blur(2px)}
+.modal{border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 48px var(--shadow)}
+.modal h2{font-size:30px;line-height:1.15;letter-spacing:-.7px}
+.modal .close{border:1px solid var(--line);border-radius:var(--radius-control);background:var(--surface);color:var(--ink);width:44px;height:44px;min-width:44px;min-height:44px;top:14px;right:14px}
+.modal .close:hover{background:var(--surface-soft)}
+.game-icon{display:block;flex:none}
+
+/* Utility controls share the same cut, edge and ink as the letter tiles. */
+.header-controls{gap:7px;flex-wrap:nowrap}
+.header-controls>.sound,.header-controls>.profile,.header-controls>.mobile-menu>summary{position:relative;display:grid;place-items:center;width:40px;height:42px;min-width:40px;min-height:42px;flex:none;margin:0;padding:0;border:1px solid var(--tile-edge);border-radius:6px;background:var(--tile);color:var(--tile-ink);box-shadow:0 3px 0 var(--tile-edge);transition:transform .16s ease,box-shadow .16s ease,background-color .16s ease}
+.header-controls>.sound::after{content:"";position:absolute;bottom:5px;left:calc(50% - 5px);width:10px;height:2px;background:currentColor;opacity:0}
+.header-controls>.sound[aria-pressed=true]::after{opacity:1}
+.header-controls>.sound[aria-pressed=true]{background:var(--highlight);color:var(--green);border-color:var(--green);box-shadow:0 3px 0 var(--green-dark)}
+.header-controls>.profile{font:700 16px var(--font-display);letter-spacing:.4px}
+.header-controls>.sound:hover,.header-controls>.profile:hover,.header-controls>.mobile-menu>summary:hover{transform:translateY(-1px)}
+.header-controls>.sound:active,.header-controls>.profile:active,.header-controls>.mobile-menu>summary:active{transform:translateY(2px);box-shadow:0 1px 0 var(--tile-edge)}
+.header-controls .music-bars{display:none}
+.arena-expanded>header>.header-controls{flex-wrap:wrap;row-gap:10px;padding-bottom:4px}
+.shell>header .mobile-menu>div{border-radius:8px}
+.tile-nav-art .nav-letter{box-shadow:0 3px 0 var(--tile-edge),inset 0 1px 0 var(--white)}
+
+/* Flat animal portraits, printed on a cream playing piece. No glow or 3D orbit. */
+.mascot.character-token{position:relative;width:96px;height:108px;flex:none;margin:0;background:none;border:0;border-radius:0;box-shadow:none!important;animation:none;--reward-color:var(--piece-ink)}
+.mascot.character-token::before,.mascot.character-token::after{content:none}
+.character-drawing{display:block;width:100%;height:100%;overflow:visible}
+.piece-edge{fill:var(--tile-edge)}
+.piece-paper{fill:var(--tile);stroke:var(--tile-edge);stroke-width:1.3}
+.piece-rule{stroke:var(--tile-edge);stroke-width:.8;opacity:.6}
+.piece-animal{fill:var(--piece-wash);stroke:var(--piece-ink);stroke-width:2}
+.piece-muzzle{fill:var(--tile)}
+.piece-eyes,.piece-nose{fill:var(--piece-ink)}
+.piece-detail{stroke:var(--piece-ink);stroke-width:1.8}
+.piece-accessory{stroke:var(--piece-ink);stroke-width:2.5;fill:var(--tile)}
+.piece-solid{fill:var(--piece-color);stroke:var(--piece-ink);stroke-width:1.8}
+.piece-color-tab{fill:var(--piece-color)}
+.piece-reward{color:var(--piece-ink)}
+.piece-portrait{transform-origin:64px 94px;transition:transform .22s ease}
+.player-turn .piece-portrait,.seat-playing .piece-portrait{transform:translateY(-2px)}
+.avatar-pad,.coral-pad{background:none}
+.active-pad{border-color:transparent;box-shadow:none}
+.display-orbit,.vault-stars{display:none}
+.edit-avatar{border:1px solid var(--line);border-radius:6px;box-shadow:0 2px 0 var(--shadow)}
+.reward-stamp{fill:var(--tile);stroke:var(--tile-edge);stroke-width:1.3}
+.reward-art{color:color-mix(in srgb,var(--reward-color,var(--piece-ink,var(--green))) 65%,var(--tile-ink));filter:none}
+.reward-metal{fill:color-mix(in srgb,var(--reward-color,var(--piece-color,var(--green))) 20%,var(--tile))}
+.reward-gem{fill:color-mix(in srgb,var(--reward-color,var(--piece-color,var(--green))) 45%,var(--tile))}
+.reward-artwork{transition:translate .18s ease;transform-origin:center}
+.vault-grid button:hover .reward-artwork,.vault-grid button:focus-visible .reward-artwork{transform:none;translate:0 -1px}
+
+/* A profile is a small player card, with a preview beside the choices. */
+.avatar-modal{width:min(720px,100%);padding:28px;scrollbar-width:thin;scrollbar-color:var(--line) var(--surface)}
+.profile-kicker{font-size:11px;color:var(--muted)}
+.avatar-modal h2{margin:7px 0 22px;padding-right:32px}
+.profile-tabs{display:flex;gap:20px;padding:0;margin:0 0 24px;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;flex-wrap:wrap}
+.profile-tabs button{position:relative;flex:none;min-height:44px;padding:8px 0 14px;border:0;border-radius:0;background:none;color:var(--muted);font:600 13px 'DM Sans',sans-serif;box-shadow:none}
+.profile-tabs button.chosen{color:var(--green);background:none;box-shadow:none;border:0}
+.profile-tabs button.chosen::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--green)}
+.profile-look{display:grid;grid-template-columns:170px minmax(0,1fr);align-items:start;gap:26px}
+.profile-look .look-showcase{display:flex;flex-direction:column;gap:12px;justify-content:flex-start;align-items:center;min-height:0;height:auto;padding:10px 0 0;margin:0;background:none;border:0;border-radius:0;overflow:visible;text-align:center}
+.profile-look .look-showcase>.character-token{width:156px;height:176px;transform:none;margin:0}
+.look-showcase h3{font-size:23px;line-height:1.2;margin:0 0 6px;overflow-wrap:anywhere}
+.look-showcase p{font-size:11px;line-height:1.5;margin:0;text-transform:capitalize}
+.look-showcase small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:8px}
+.look-options{min-width:0}
+.avatar-modal .look-options fieldset{margin:0 0 20px;min-width:0}
+.avatar-modal legend{font-size:12px;line-height:1.4;color:var(--ink);font-weight:600;margin-bottom:10px}
+.swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
+.swatches button{display:flex;align-items:center;flex-direction:column;gap:7px;background:none!important;width:auto;height:auto;min-width:0;min-height:54px;padding:3px 0;border:0;border-radius:4px;box-shadow:none!important;outline-offset:2px}
+.swatches button>span{display:grid;place-items:center;width:30px;height:32px;border-radius:4px;color:var(--tile);box-shadow:0 2px 0 var(--shadow)}
+.swatches button.chosen>span{outline:2px solid var(--ink);outline-offset:3px}
+.swatches button.chosen:not(:focus-visible){outline-color:transparent}
+.swatches small{font-size:10px;color:var(--muted)}
+.swatches button.chosen small{color:var(--ink);font-weight:700}
+.avatar-options{display:grid;gap:8px}
+.shape-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+.avatar-options button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:44px;padding:10px 5px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font-size:11px;box-shadow:0 2px 0 var(--shadow)}
+.avatar-options button:hover{border-color:var(--green)}
+.avatar-options button.chosen{background:var(--highlight);border-color:var(--green);box-shadow:inset 0 -2px 0 var(--green);color:var(--green)}
+.shape-options .character-token{width:56px;height:63px;transform:none}
+.option-check{position:absolute;top:6px;right:5px}
+.accessory-options{grid-template-columns:repeat(4,minmax(0,1fr))}
+.accessory-options .game-icon{width:22px;height:22px}
+.rewards-link{display:flex;align-items:center;gap:8px;padding:10px 0;min-height:44px;background:none;border:0;border-radius:0;color:var(--green);font-size:12px;text-align:left}
+.avatar-modal>.fine{margin-top:22px;border-top:1px solid var(--line);padding-top:16px;font-size:11px}
+.avatar-modal>.primary{font-size:16px;margin-top:12px}
+.avatar-modal .motion-control{border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0 0 18px;margin:4px 0 22px;background:none}
+.motion-control label{font-size:13px}
+.motion-control select{border-radius:6px;font-size:14px}
+.profile-name{border:0;padding:0;margin:24px 0}
+.profile-name label{color:var(--ink);font-size:13px;font-weight:600}
+.recovery-settings{border:0;border-top:1px solid var(--line);border-radius:0;padding:20px 0 0;background:none}
+.recovery-settings summary{font-size:15px;color:var(--ink)}
+.recovery-settings summary svg{vertical-align:middle}
+.recovery-reminder{border:0;border-left:3px solid var(--green);border-radius:0;background:var(--highlight);padding:14px 16px}
+.recovery-reminder h3{font-size:20px}
+
+/* Collectible seals, with the same artwork on the reward and the character. */
+.reward-showcase{display:grid;grid-template-columns:132px minmax(0,1fr);column-gap:20px;align-content:center;position:relative;min-height:166px;background:var(--surface-soft);border:1px solid var(--line);border-radius:8px;padding:18px;text-align:left;color:var(--ink)}
+.vault-tier{grid-column:2;align-self:end;font-size:11px;letter-spacing:0;color:var(--muted);filter:none}
+.reward-podium{grid-column:1;grid-row:1/4;width:132px;height:145px;margin:0}
+.reward-podium>.character-token{width:126px;height:142px;transform:none;filter:none}
+.reward-caption{grid-column:2}
+.reward-caption h3{margin:6px 0;font-size:27px;line-height:1.12;color:var(--ink)}
+.reward-caption p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 10px}
+.reward-status{grid-column:2;justify-self:start;align-self:start;display:inline-flex;align-items:center;min-height:24px;padding:0;border:0;background:none;color:var(--green);font-size:11px;font-weight:600;letter-spacing:0}
+.vault-action{padding:16px 0 20px;gap:12px;flex-wrap:wrap}
+.vault-action b{font-size:13px;color:var(--ink)}
+.vault-action small{font-size:11px;color:var(--muted);line-height:1.5}
+.vault-action .primary{width:auto;margin:0;padding:10px 18px;min-height:44px;font-size:14px}
+.reward-grid.vault-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.vault-grid button{border:1px solid var(--line);border-radius:6px;padding:14px 8px 12px;min-height:132px;gap:0;background:var(--surface);box-shadow:0 2px 0 var(--shadow);transition:translate .18s ease,border-color .18s ease}
+.vault-grid button:hover{transform:none;translate:0 -2px;border-color:var(--green);box-shadow:0 2px 0 var(--shadow)}
+.vault-grid button.chosen{background:var(--highlight);border-color:var(--green);box-shadow:inset 0 -2px 0 var(--green)}
+.vault-grid .reward-emblem,.vault-grid .reward-art{width:48px;height:48px}
+.vault-grid .reward-emblem{margin-bottom:10px}
+.vault-grid b{font:600 12px 'DM Sans',sans-serif;color:var(--ink)}
+.vault-grid .reward-name{font-size:10px;min-height:26px;color:var(--muted)}
+.vault-grid small{font-size:10px;color:var(--green);margin-top:5px}
+.vault-grid .reward-locked:after{content:none}
+.vault-grid .reward-locked small{color:var(--muted)}
+.vault-grid .reward-locked .reward-art{opacity:.65}
+.streak-collection{border-top:1px solid var(--line);padding-top:20px;margin-top:24px}
+.streak-badge{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:14px 6px;box-shadow:none}
+.streak-earned{border-color:color-mix(in srgb,var(--focus) 50%,var(--line));background:var(--surface-soft);box-shadow:inset 0 -2px 0 var(--tile-edge)}
+.streak-flame{filter:none}
+.streak-badge .streak-flame{width:27px;height:34px;transform:none!important}
+.streak-badge b{font-size:17px}
+.public-profile>.mini-label{display:none}
+.public-profile .avatar-preview{height:126px;margin:4px 0 16px;background:none}
+.public-profile .avatar-preview>.character-token{width:110px;height:124px;transform:none}
+.public-profile .public-stats>div{border-radius:0;background:none;box-shadow:none;border:0;border-right:1px solid var(--line)}
+.public-profile .public-stats>div:last-child{border-right:0}
+.public-rewards>span{border:0;background:none;padding:5px 0;font-size:11px}
+
+/* Gameplay and secondary screens use paper sections, not stacks of pill cards. */
+.arena{overflow:hidden}
+.arena-toolbar{background:var(--surface);font-size:12px}
+.arena-toolbar button{border-radius:5px;background:none;border:1px solid var(--line);color:var(--ink)}
+.board,.board.roundtable{background:var(--surface-soft)}
+.board-grid{display:none}
+.table-seat{border-radius:7px;box-shadow:none}
+.board .player-turn{border-radius:8px;box-shadow:0 0 0 1px var(--green)}
+.turn-banner{border-radius:0;border:0;border-bottom:1px solid var(--line)}
+.bomb-timer .bomb-body{background:var(--bomb-shell);box-shadow:0 3px 0 var(--shadow)}
+.cinematic-blast{background:transparent}
+.impact-flash{background:color-mix(in srgb,var(--tile) 60%,transparent)}
+.fireball-outer{background:var(--focus);filter:none}
+.fireball-core{background:var(--tile);filter:none}
+.shockwave{border-color:var(--focus);box-shadow:none}
+.wave-two{border-color:var(--coral);box-shadow:none}
+.smoke-puff{background:color-mix(in srgb,var(--muted) 20%,transparent);filter:none}
+.blast-debris{background:var(--focus);box-shadow:none}
+.debris-1{background:var(--tile-edge)}
+.debris-2{background:var(--coral)}
+.impact-caption{filter:none}
+.impact-caption>span{color:var(--ink);background:var(--tile);letter-spacing:0}
+.impact-caption>b{font-family:var(--font-display);color:var(--tile);text-shadow:0 3px 0 var(--coral);-webkit-text-stroke:1px var(--coral)}
+.cinematic-blast .impact-caption>strong{background:var(--tile);color:var(--tile-ink);border:1px solid var(--tile-edge);border-radius:6px}
+.rank-badge{border-radius:4px;letter-spacing:0}
+.alphabet-panel,.trail{box-shadow:none}
+.alphabet-grid span{border-radius:3px;font-family:var(--font-display);font-size:14px}
+.alphabet-earned{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px}
+.word-list{scrollbar-color:var(--line) var(--surface)}
+.word-list>div{background:none;border-radius:0}
+.room-seats>div{border-radius:6px;background:var(--surface);box-shadow:none}
+.room-seats .seat-empty{background:none;border-style:dashed}
+.board-channels,.hub-tabs{gap:6px}
+.board-channels button,.hub-tabs button,.live-filters button{border-radius:5px}
+.community-messages{background:var(--surface);border-radius:0}
+.community-messages article{border-bottom:1px solid var(--paper-rule)}
+.community-compose input{border-width:1px}
+.community-heading h2{font-size:24px}
+.leaderboard,.guide{padding:28px}
+.leaderboard h2,.guide h2{font-size:34px;letter-spacing:-.8px}
+.leaderboard-heading>div>.mini-label,.guide>.mini-label{display:none}
+.leaderboard>p,.guide>p{font-size:13px;line-height:1.7}
+.ladder-tiers{gap:0;border-block:1px solid var(--line);padding:14px 0;margin:24px 0}
+.ladder-tiers>div{border:0;background:none;border-right:1px solid var(--line);border-radius:0;padding:5px 8px;box-shadow:none}
+.ladder-tiers>div:last-child{border-right:0}
+.full-leaderboard{border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:none}
+.ladder-columns{background:var(--surface-soft);font-size:11px;letter-spacing:0}
+.ladder-row{border-radius:0}
+.ladder-you{background:var(--highlight)}
+.history-row{border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;padding:16px 0;box-shadow:none}
+.history-outcome{border-radius:4px;font-size:10px;letter-spacing:.5px}
+.history-opponents .player-link{display:inline-flex;align-items:center;gap:4px}
+.history-row small{line-height:1.7}
+.guide-grid article{border:0;border-top:1px solid var(--line);border-radius:0;background:none;padding:20px 0}
+.guide-grid b{font-family:var(--font-display);font-weight:400;font-size:21px;color:var(--ink)}
+.guide-grid p{font-size:13px;line-height:1.75}
+.search-guide{border-radius:8px;box-shadow:none}
+.live-game,.watch-table,.watch-trail{border-radius:8px}
+.watch-player{border-radius:6px}
+.result-card{border-radius:8px;box-shadow:none;border-top:2px solid var(--green)}
+.daily-ready,.daily-arena{border:1px solid var(--line);border-radius:8px}
+.analytics-stat,.analytics-card{border-radius:8px;box-shadow:none}
+.analytics-card .analytics-stat{border:0;border-radius:0;border-right:1px solid var(--line);background:none}
+.analytics-card .analytics-stat:last-child{border-right:0}
+
+@media(max-width:1100px){.shell:not(.arena-expanded)>header{column-gap:20px}}
+@media(max-width:600px){
+ .header-controls{gap:6px;margin-left:0}
+ .header-controls>.sound,.header-controls>.profile,.header-controls>.mobile-menu>summary{width:44px;min-width:44px;height:44px;min-height:44px}
+ .header-controls .game-icon{width:18px;height:18px}
+ .shell:not(.arena-expanded)>header{row-gap:14px;column-gap:12px;padding-block:12px 15px}
+ .shell:not(.arena-expanded)>header>.brand{flex:1 1 100%;justify-content:center;margin:0}
+ .shell:not(.arena-expanded)>header>.header-controls{margin-inline:auto;justify-content:center;gap:10px}
+ .home-screen .header-controls>.music-toggle{display:grid}
+ .avatar-modal{padding:22px 18px}
+ .avatar-modal h2{font-size:28px;margin-bottom:16px}
+ .profile-tabs{gap:20px;margin-bottom:20px}
+ .profile-tabs button{font-size:12px}
+ .profile-look{grid-template-columns:minmax(0,1fr);gap:20px}
+ .profile-look .look-showcase{flex-direction:row;text-align:left;justify-content:flex-start;padding:0;gap:18px;border-bottom:1px solid var(--line);padding-bottom:18px}
+ .profile-look .look-showcase>.character-token{width:96px;height:108px}
+ .look-showcase h3{font-size:23px}
+ .look-showcase small{max-width:22ch}
+ .swatches{gap:8px}
+ .swatches button>span{width:32px;height:34px}
+ .avatar-modal .look-options fieldset{margin-bottom:18px}
+ .shape-options .character-token{width:58px;height:65px}
+ .reward-showcase{grid-template-columns:100px minmax(0,1fr);gap:0 12px;padding:14px;min-height:150px}
+ .reward-podium{width:100px;height:126px}
+ .reward-podium>.character-token{width:100px;height:113px}
+ .reward-caption h3{font-size:23px}
+ .reward-caption p{font-size:11px}
+ .reward-grid.vault-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .vault-grid button{min-height:122px}
+ .vault-grid .reward-name{min-height:0}
+ .leaderboard,.guide{padding:20px 16px}
+ .leaderboard h2,.guide h2{font-size:29px}
+ .ladder-tiers{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 0}
+ .ladder-tiers>div:nth-child(4n){border-right:0}
+ .ladder-tiers b{font-size:10px}
+ .ladder-tiers small{font-size:9px}
+ .modal .close{top:10px;right:10px}
+}
+@media(max-width:400px){
+ .shell:not(.arena-expanded)>header>.brand{flex:1 1 100%;justify-content:center;margin:0}
+ .shell:not(.arena-expanded)>header>.header-controls{margin-inline:auto;justify-content:center;gap:10px}
+ .header-controls>.sound,.header-controls>.profile,.header-controls>.mobile-menu>summary{width:44px;min-width:44px;height:44px;min-height:44px}
+ .profile-tabs{gap:16px}
+ .profile-tabs button{font-size:11px}
+}
+html[data-motion=reduced] .piece-portrait,html[data-motion=reduced] .reward-artwork,html[data-motion=reduced] .vault-grid button,html[data-motion=reduced] .header-controls>*{transition:none!important}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) .piece-portrait,html:not([data-motion=full]) .reward-artwork,html:not([data-motion=full]) .vault-grid button,html:not([data-motion=full]) .header-controls>*{transition:none!important}}
+
+/* Quiet paper, clear hierarchy: keep the character in the actual game pieces. */
+.shell h1,.shell h2,.guide h2,.daily-shell h1{font-weight:700}
+.shell .fine,.shell .board-note,.shell .guide-grid p{font-size:14px;line-height:1.6}
+.shell .side-title{font-size:13px;font-weight:600}
+.shell .community-board h2{font-size:25px}.shell .community-board p,.shell .community-messages p{font-size:14px;line-height:1.6}
+.shell .community-channel-hint,.shell .community-footnote{font-size:12px;line-height:1.5}
+.shell .header-controls>.sound,.shell .header-controls>.profile,.shell .header-controls>.mobile-menu>summary{box-shadow:none;border-color:var(--line);background:var(--surface);color:var(--ink)}
+.shell .header-controls>.sound[aria-pressed=true]{background:var(--highlight);color:var(--green);border-color:var(--line);box-shadow:none}
+.shell .header-controls>.profile{background:var(--tile);color:var(--tile-ink)}
+.shell .primary:not(.menu-play):not(.rematch-button){box-shadow:none}
+.shell .secondary{box-shadow:none}
+.shell footer{font-size:13px;line-height:1.6}.shell footer .creator-credit{font-size:12px}
+.shell .modal h2{font-weight:700}.shell .modal .fine,.shell .modal label{font-size:14px}
+.shell .profile-tabs button{font-size:14px}.shell .avatar-modal legend{font-size:14px}.shell .avatar-options button{font-size:13px}
+.shell .quick-settings summary,.shell .quick-settings label{font-size:14px}

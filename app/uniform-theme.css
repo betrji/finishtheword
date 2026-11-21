@@ -1,0 +1,309 @@
+/* One paper-and-pine visual system across menus, matches, profiles and guides. */
+:root{--radius-control:2px;--radius-panel:2px;--outline:color-mix(in srgb,var(--ink) 72%,var(--surface));--rule:color-mix(in srgb,var(--ink) 25%,var(--surface))}
+body{background:var(--canvas);background-image:none}
+:is(.panel,.community-board,.modal,.result-card,.room-directory,.open-room-card,.lobby-disclosure,.queue-options,.room-join-requests,.full-leaderboard,.ranking-empty,.history-item,.search-guide,.guide,.recovery-reminder){border:1px solid var(--outline);border-radius:2px;box-shadow:none}
+:is(.panel,.community-board,.modal,.result-card,.room-directory,.search-guide){background:var(--surface)}
+:is(.primary,.secondary,.text-button,.profile-tabs button,.community-tabs button,.difficulty-cards button,.mode-picker button,.room-privacy button,.avatar-options button,.vault-grid button,.result-socials a,.result-socials button){border-radius:2px;box-shadow:none}
+.primary:not(.menu-play){border:1px solid var(--green-dark);box-shadow:none}.secondary{border:1px solid var(--outline);background:var(--surface);color:var(--ink);box-shadow:none}.primary:active:not(.menu-play),.secondary:active{box-shadow:none}
+:is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){border-radius:2px;border-color:var(--rule)}
+:is(.shell,.modal,.search-guide,.daily-shell) :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea):focus{border-color:var(--green)}
+:is(.shell,.modal,.search-guide) :is(h1,h2,h3){font-family:var(--font-display);color:var(--ink)}
+:is(.panel-top,.side-title,.mini-label,.profile-kicker){font-size:13px;letter-spacing:.08em}.panel-top,.side-title{border-bottom:1px solid var(--rule);padding-bottom:14px}
+:is(.header-controls>.sound,.header-controls>.profile,.header-controls>.mobile-menu>summary,.shell>header .mobile-menu>div){border:1px solid var(--outline);border-radius:2px;box-shadow:none;background:var(--surface)}
+.header-controls>.sound[aria-pressed=true]{box-shadow:none;border-color:var(--green);background:var(--highlight)}
+.tile-nav-art .nav-letter{border-radius:2px;border:1px solid var(--outline);box-shadow:1px 2px 0 var(--tile-edge)}
+.shell>header{border-bottom:1px solid var(--rule)}
+.game-tile{border-radius:2px;border:1px solid var(--tile-ink);box-shadow:1px 3px 0 var(--tile-edge)}
+:is(.modal,.avatar-modal){padding:28px}.modal .close{border-radius:2px;border-color:var(--rule);box-shadow:none}
+:is(.profile-tabs,.community-tabs){border-bottom:1px solid var(--rule);background:none;border-radius:0}
+:is(.profile-tabs,.community-tabs) button{min-height:44px;color:var(--muted)}
+:is(.profile-tabs,.community-tabs) button.chosen{color:var(--green);background:var(--surface-soft)}
+:is(.room-seats>div,.room-code-entry input,.room-join-request,.friend-card,.watch-card,.community-empty,.chat-input,.chat-message,.word-list>button,.word-list>[data-word-meaning],.history-list>article){border-radius:2px;box-shadow:none}
+:is(.room-seats>div,.friend-card,.watch-card){border:1px solid var(--rule)}
+:is(.leaderboard,.guide,.search-guide){padding:clamp(22px,3vw,40px)}
+:is(.guide,.search-guide){max-width:960px;margin:28px auto;line-height:1.65}
+:is(.guide-grid article,.search-guide h2){border-top:1px solid var(--rule);padding-top:20px}
+:is(.guide-grid article,.guide-grid){border-radius:2px;box-shadow:none}
+:is(.ladder-toolbar,.ladder-header,.ladder-row,.history-row){border-color:var(--rule)}
+:is(.tag,.prefix-badge,.casual-result,.room-code,.rating-result,.rank-badge){border-radius:2px}
+.arena.panel,.trail.panel{border-color:var(--outline);border-radius:2px;box-shadow:none}
+.arena-toolbar{border-bottom:1px solid var(--rule)}.arena-toolbar button{border-radius:2px;min-height:40px}
+:is(.board,.board-playing,.arena-idle-board){border-radius:2px}
+:is(.live-typing,.word-input-wrap,.censored-word-input,.rematch,.rematch-panel){border-radius:2px}
+.result-card .result-share-actions button{border-radius:2px;box-shadow:none}.result-card dl{border-color:var(--rule)}
+.text-button{font-size:14px}.setup-footer,.room-controls,.queue-wait{font-size:14px}
+.connection-status.connection-good{height:0;min-height:0;padding:0;margin:0;border:0;overflow:hidden}
+.connection-status.connection-waiting{border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:2px;padding:10px 14px;margin:8px 0;font-size:14px}
+.daily-embedded .connection-status.connection-waiting{background:var(--entrance-board-deep);color:var(--welcome-chalk)}
+.daily-arena{position:relative}.daily-status .daily-time-track{position:absolute;top:0;left:0;right:0;margin:0;height:4px}
+body:has(.daily-standalone){background:var(--entrance-board)}.daily-shell.daily-standalone{max-width:660px;color:var(--welcome-chalk);padding:28px 20px;min-height:100svh}.daily-standalone .daily-nav a,.daily-standalone .daily-nav button{color:var(--welcome-chalk)}.daily-standalone .daily-nav{flex-wrap:wrap;gap:12px}
+.daily-embedded .daily-ready h2,.daily-embedded .daily-trail h2{color:var(--welcome-chalk)}
+@media(max-width:600px){:is(.modal,.avatar-modal){padding:22px 18px}.guide,.search-guide{margin:16px;padding:22px 18px}.panel-top,.side-title{font-size:12px;letter-spacing:.04em}.connection-status.connection-waiting{flex-wrap:wrap;gap:8px}.connection-status small{font-size:13px}}
+.shell .daily-shell h1,.daily-shell.daily-embedded h1{color:var(--welcome-chalk)}
+.community-hub{border:1px solid var(--outline);background:var(--surface);padding:clamp(22px,3vw,40px)}.community-title{border-bottom:1px solid var(--rule);padding-bottom:22px;margin-bottom:22px}.hub-tabs button,.live-filters button{border:1px solid var(--rule);border-radius:2px;box-shadow:none;background:var(--surface);color:var(--ink)}.hub-tabs button.chosen,.live-filters button.chosen{border-color:var(--green);background:var(--highlight);color:var(--green)}.community-empty-state,.friends-section{border:1px solid var(--rule);border-radius:2px;padding:28px;margin:22px 0}.friend-row{border-radius:2px;border-color:var(--rule);box-shadow:none}.watch-table.panel,.watch-trail.panel{border-radius:2px}.community-hub .fine{line-height:1.6}@media(max-width:600px){.community-title{align-items:flex-start;gap:16px;flex-wrap:wrap}.community-hub{padding:20px 16px}.community-empty-state,.friends-section{padding:22px 16px}}
+
+/* Give the multiplayer table the same felt, paper and tile treatments as the menu. */
+:root {
+  --arena-felt: var(--entrance-board);
+  --arena-felt-deep: var(--entrance-board-deep);
+  --arena-on-felt: var(--welcome-chalk);
+}
+.shell .arena-idle {
+  border: 1px solid var(--welcome-rule);
+  border-radius: var(--radius-panel);
+  box-shadow: none;
+}
+.shell .arena-idle-heading h1 {
+  color: var(--welcome-chalk);
+  font-size: clamp(40px, 6vw, 72px);
+}
+.arena-idle-heading :is(span,p),
+.arena-idle .idle-table-center > span,
+.arena-idle .idle-open-seat > span {
+  color: var(--welcome-soft);
+}
+.arena-idle-table {
+  margin-block: 0;
+  margin-inline: auto;
+  border-block: 1px solid var(--welcome-rule);
+}
+.arena-idle .idle-open-seat > svg {
+  border-color: var(--welcome-soft);
+  border-radius: var(--radius-panel);
+  color: var(--welcome-soft);
+}
+.arena-idle-actions .primary:not(.menu-play) {
+  background: var(--welcome-chalk);
+  color: var(--entrance-board-deep);
+  border-color: var(--welcome-chalk);
+}
+.arena-idle-actions .secondary {
+  color: var(--welcome-chalk);
+  border-color: var(--welcome-soft);
+}
+.arena.panel .arena-toolbar {
+  background: var(--entrance-board-deep);
+  color: var(--welcome-chalk);
+  border-color: var(--welcome-rule);
+}
+.arena.panel .arena-toolbar button {
+  background: transparent;
+  border-color: var(--welcome-rule);
+  color: var(--welcome-chalk);
+}
+.arena.panel .board:not(.board-results) {
+  background: var(--entrance-board);
+  color: var(--welcome-chalk);
+  border-block-end: 1px solid var(--welcome-rule);
+}
+.arena .board:not(.board-results) :is(.center-stage > .mini-label,.round-label,.board-note) {
+  color: var(--welcome-soft);
+}
+.arena .board:not(.board-results) > .player,
+.arena .board:not(.board-results) > .player .player-link,
+.arena .board:not(.board-results) > .center-stage > b {
+  color: var(--welcome-chalk);
+}
+.arena .board:not(.board-results) > .center-stage :is(.queue-wait,.queue-action,.queue-action > span) {
+  color: var(--welcome-soft);
+}
+.arena .board:not(.board-results) > .player-turn {
+  background: var(--entrance-board-deep);
+  box-shadow: inset 0 0 0 1px var(--welcome-soft);
+  border-radius: var(--radius-panel);
+}
+.arena .board :is(.table-seat,.tile-workspace) {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-panel);
+}
+.arena .board .table-seat.seat-playing {
+  background: var(--highlight);
+  border-color: var(--green);
+}
+.arena .tile-workspace:focus-within {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px var(--welcome-soft);
+}
+.arena :is(.arena-bottom,.match-sidebar), .trail.panel {
+  background: var(--surface);
+  color: var(--ink);
+}
+.arena .casual-power-tiles button {
+  border-radius: var(--radius-control);
+}
+
+/* Use the same page title treatment for the public guides and owner pages. */
+:is(.search-guide,.analytics-shell,.moderation-shell,.community-hub) h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  background: var(--entrance-board);
+  color: var(--welcome-chalk);
+  border: 1px solid var(--welcome-rule);
+  border-radius: var(--radius-panel);
+  padding: clamp(14px, 2.4vw, 26px);
+  overflow-wrap: anywhere;
+}
+.shell .community-hub h1,
+.shell .search-guide h1 {
+  color: var(--welcome-chalk);
+}
+:is(.analytics-shell,.moderation-shell,.search-guide) :is(h2,h3) {
+  font-family: var(--font-display);
+  color: var(--ink);
+}
+
+.arena-idle-heading h1 .arena-heading-period {
+  color: var(--welcome-gold);
+}
+
+/* One page canvas and one brand anchor across gameplay and standalone routes. */
+:root {
+  --site-paper: var(--surface-soft);
+  --site-gutter: clamp(16px, 4vw, 64px);
+}
+html[data-theme] body,
+html[data-theme] body:has(.arena-first),
+html[data-theme] .shell.arena-expanded {
+  background: var(--site-paper);
+}
+body:has(.shell > header, .daily-standalone) > .standalone-site-header {
+  display: none;
+}
+.shell:not(.arena-first):not(.arena-expanded) > header {
+  margin-inline: calc(-1 * var(--shell-inset));
+}
+.shell {
+  --shell-inset: 64px;
+}
+@media (max-width: 1100px) {
+  .shell { --shell-inset: 32px; }
+}
+@media (max-width: 600px) {
+  .shell { --shell-inset: 16px; }
+}
+.shell:not(.arena-first):not(.arena-expanded) {
+  max-width: none;
+  padding-inline: var(--shell-inset);
+}
+.shell > header,
+.shell.arena-expanded > header,
+.standalone-site-header {
+  background: var(--site-paper);
+  padding-inline: var(--site-gutter);
+  border-bottom: 1px solid var(--rule);
+}
+.shell > header > .brand,
+.standalone-site-header > .brand {
+  justify-self: start;
+  justify-content: flex-start;
+  margin: 0;
+  color: var(--ink);
+}
+.standalone-site-header {
+  display: flex;
+  align-items: center;
+  min-height: 86px;
+}
+@media (max-width: 1100px) {
+  .shell:not(.arena-expanded) > header,
+  .shell.arena-expanded > header {
+    grid-template-areas: "brand controls" "navigation navigation";
+    grid-template-columns: minmax(0,1fr) auto;
+    padding-block: 12px 6px;
+  }
+  .standalone-site-header { min-height: 70px; }
+}
+@media (min-width: 1101px) {
+  .shell > header, .standalone-site-header { min-height: 101px; }
+}
+
+html[data-theme] body:has(.daily-standalone) {
+  background: var(--entrance-board);
+}
+
+.brand .brand-wordmark { font-weight: 700; }
+.brand .brand-wordmark > span { font-weight: 600; }
+body :is(h1,h2,h3):not(.daily-shell *) {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+body :is(h2,h3):not(.daily-shell *) { letter-spacing: -.015em; }
+:is(.primary,.secondary,.menu-play,.result-socials button,.result-socials a):not(.daily-shell *) {
+  font-weight: 700;
+}
+:is(.panel-top,.side-title,.mini-label,.profile-kicker,.tile-rack-label):not(.daily-shell *) {
+  font-weight: 700;
+  letter-spacing: .065em;
+}
+.shell > header .tile-navigation .tile-nav-item.selected {
+  font-weight: 700;
+}
+:is(.party-counts,.hub-tabs,.live-filters,.profile-tabs,.difficulty-cards) button:is(.chosen,[aria-pressed=true]) {
+  outline: 1px solid var(--green);
+  outline-offset: -1px;
+  font-weight: 700;
+}
+:is(.search-guide,.guide,.analytics-card,.community-hub) p {
+  line-height: 1.6;
+}
+.search-guide p a,
+.analytics-card p a {
+  color: var(--green);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .16em;
+}
+
+.shell:not(.arena-first):not(.arena-expanded) > :is(main,footer) {
+  max-width: 1452px;
+  margin-inline: auto;
+}
+.shell.arena-first > header > .brand .brand-wordmark {
+  display: flex;
+}
+.shell > header > .brand,
+.standalone-site-header > .brand {
+  align-self: start;
+  margin-block-start: 12px;
+}
+@media (min-width: 1101px) {
+  .shell > header > .brand,
+  .standalone-site-header > .brand {
+    align-self: center;
+    margin-block-start: 0;
+  }
+}
+@media (max-width: 1100px) {
+  .shell > header > .brand { margin-block-start: 0; }
+}
+
+/* Felt needs its own text colors, including names without a profile link. */
+.arena .board:not(.board-results) > .player .player-label {
+  color: var(--welcome-soft);
+  font-weight: 700;
+}
+.arena .board:not(.board-results) > .player .player-link:disabled {
+  opacity: 1;
+}
+.arena .board:not(.board-results) > .player .hearts {
+  color: var(--welcome-pink);
+}
+
+.arena .board-searching .match-search b {
+  color: #fff;
+}
+.arena .board-searching .center-stage > p {
+  color: var(--welcome-soft);
+}
+.arena .board-searching .search-dots i {
+  background-color: var(--welcome-gold);
+}
+
+.daily-embedded .daily-quick-practice h2 {
+  color: var(--welcome-chalk);
+}

@@ -1,0 +1,118 @@
+/* The arena is the front door: a colorful table, one quiet place to join. */
+:root{--entrance-board:#235b4b;--entrance-board-deep:#194638;--welcome-chalk:#fff8e8;--welcome-soft:#c1d9c9;--welcome-blue:#b5d7e1;--welcome-pink:#efa69b;--welcome-gold:#edc36e;--welcome-rule:#427460}
+body:has(.arena-first){background:var(--bg,var(--surface-soft));background-image:none}
+.shell.arena-first,.shell:has(.arena-layout){max-width:1580px;width:100%}
+.arena-first main{padding-top:8px}
+.arena-welcome{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(330px,1fr);min-height: min(780px,calc(100svh - 165px));gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.entrance-board{background:var(--entrance-board);color:var(--welcome-chalk);display:flex;flex-direction:column;padding:clamp(24px,3vw,48px);position:relative;min-width:0}
+.entrance-board-heading{position:relative;z-index:1}
+.welcome-player-count{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--welcome-soft)}
+.entrance-board h1{font:700 clamp(42px,4.5vw,68px)/1.03 var(--font-display);letter-spacing:-2px;margin:22px 0 17px;color:var(--welcome-chalk)}
+.entrance-board-heading p{font-size:15px;line-height:1.65;color:var(--welcome-soft);margin:0}
+.welcome-table{flex:1;position:relative;min-height:330px;display:grid;place-items:center;padding:22px 0 38px}
+.welcome-chain{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.welcome-word-label{font-size:13px;color:var(--welcome-soft);margin-bottom:9px}
+.welcome-tile-row{display:flex;gap:7px}
+.welcome-tile-row .game-tile{width:clamp(40px,4.1vw,62px);height:clamp(46px,4.7vw,69px);font-size:clamp(27px,3vw,41px);border-radius:9px;animation:welcome-tile-in .45s both;animation-delay:calc(var(--i)*45ms)}
+.welcome-tile-row .welcome-blue{background:var(--welcome-blue);--tile-edge:#7da4ae;box-shadow:0 5px 0 var(--tile-edge)}
+.welcome-chain-connector{display:flex;align-items:center;gap:9px;height:38px;color:var(--welcome-gold);font-size:14px}
+.welcome-chain-connector>span:first-child{display:block;width:24px;height:1px;background:currentColor}
+.welcome-seat{position:absolute;bottom:54px;display:flex;flex-direction:column;align-items:center;gap:7px;width:112px;font-size:14px;text-align:center;z-index:2}
+.welcome-seat-you{left:0}.welcome-seat-rival{right:0}
+.welcome-seat b{font-weight:500;max-width:100%;overflow-wrap:anywhere;color:var(--welcome-chalk)}
+.welcome-seat>span:not(.welcome-hearts){font-size:13px;color:var(--welcome-soft)}
+.welcome-seat button{padding:0;background:none;border:0;color:inherit;cursor:pointer;border-radius:10px;transition:transform .2s}
+.welcome-seat button:hover{transform:translateY(-3px)}
+.welcome-seat .character-token{width:76px;height:86px}
+.welcome-hearts{display:flex;gap:4px;color:var(--welcome-pink)}
+.welcome-open-seat{width:68px;height:76px;display:grid;place-items:center;border:1px dashed var(--welcome-soft);border-radius:11px;color:var(--welcome-soft);background:var(--entrance-board-deep)}
+.welcome-next-example{position:absolute;bottom:0;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:7px;min-height:36px;padding:6px 12px;background:none;color:var(--welcome-soft);border:0;font-size:13px;white-space:nowrap;border-radius:6px}
+.welcome-next-example:hover{color:var(--welcome-chalk);background:var(--entrance-board-deep)}
+.entrance-board-rules{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:22px;margin-top:12px;border-top:1px solid var(--welcome-rule);font-size:13px;color:var(--welcome-soft)}
+.entrance-board-rules span{display:flex;align-items:center;gap:7px}
+.welcome-desk{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;justify-content:center;min-width:0;background:var(--surface)}
+.welcome-desk-heading{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.welcome-ready-dot{width:7px;height:7px;background:var(--green);border-radius:50%}
+.welcome-desk h2{font:700 34px/1.1 var(--font-display);letter-spacing:-.8px;margin:12px 0 24px}
+.welcome-desk .quick-setup{margin:0;padding:0;border:0;background:none;box-shadow:none}
+.welcome-desk .start-form{display:flex;flex-direction:column;gap:14px}
+.welcome-desk .name-field{width:100%;flex:auto}
+.welcome-desk .name-field label{font-size:14px;font-weight:500}
+.welcome-desk .name-field input{min-height:51px;background:var(--surface-soft);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:17px}
+.welcome-desk .name-hint{font-size:13px;margin-top:6px}
+.welcome-desk .menu-play{min-height:73px;border-radius:10px;margin:0;padding:14px 17px;background:var(--green);box-shadow:0 2px 0 var(--green-dark);width:100%}
+.welcome-desk .menu-play::before,.welcome-desk .menu-play::after{display:none}
+.welcome-desk .menu-play strong{font-size:25px}.welcome-desk .menu-play small{font-size:13px}
+.welcome-desk .menu-play-key{width:36px;height:36px;border-radius:7px}
+.welcome-desk .quick-settings{width:100%;margin:0}
+.welcome-desk .quick-settings summary{min-height:42px;font-size:14px}
+.welcome-desk .quick-alternatives{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+.welcome-desk .quick-alternatives button{min-width:0;min-height:80px;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:12px 6px;border:0;border-radius:9px;background:var(--surface-soft);box-shadow:none;color:var(--ink)}
+.welcome-desk .quick-alternatives button:first-child{background:color-mix(in srgb,var(--welcome-blue) 35%,var(--surface))}
+.welcome-desk .quick-alternatives button:last-child{background:color-mix(in srgb,var(--welcome-gold) 28%,var(--surface))}
+.welcome-desk .quick-alternatives button>svg,.welcome-desk .quick-alternatives small,.welcome-desk .menu-art-back{display:none}
+.welcome-desk .quick-alternatives b{font-size:14px;font-weight:600;white-space:normal}
+.welcome-desk .menu-option-art{width:25px;height:24px}.welcome-desk .menu-art-front{position:static;background:none;border:0;box-shadow:none;transform:none;width:25px;height:24px;color:var(--ink)}
+.welcome-desk .setup-footer{margin-top:17px;font-size:13px;gap:12px}.welcome-desk .setup-footer button{font-size:13px;min-height:30px}
+.welcome-tutorial{display:flex;align-items:center;text-align:left;gap:11px;padding:20px 0;margin-top:22px;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;background:none;color:var(--ink)}
+.welcome-tutorial>span{flex:1}.welcome-tutorial b{display:block;font-size:14px;font-weight:600}.welcome-tutorial small{display:block;font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5}
+.welcome-desk-links{display:flex;justify-content:space-between;gap:12px;padding-top:17px}
+.welcome-desk-links a,.welcome-desk-links button{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--green);border:0;background:none;padding:0;min-height:32px;text-decoration:none}
+.arena-first .lobby-disclosure{margin:20px auto 0;max-width:900px}
+.arena-first footer{margin-top:24px}
+.entrance-board button:focus-visible{outline-color:var(--welcome-chalk)}
+@keyframes welcome-tile-in{from{opacity:0;transform:translateY(10px) rotate(-3deg)}to{opacity:1;transform:none}}
+@media(min-width:1100px){.shell:has(.arena-layout) .arena-layout{grid-template-columns:minmax(0,1fr) 300px}.shell:has(.arena-layout) .board.board-playing{min-height:390px}}
+@media(max-width:1100px) and (min-width:761px){.arena-welcome{grid-template-columns:minmax(0,1fr) 340px}.entrance-board{padding:25px}.welcome-seat{bottom:12px}.welcome-table{padding-bottom:125px;min-height:360px}.welcome-next-example{bottom:34px}.entrance-board-rules{font-size:13px;gap:7px}.entrance-board-rules svg{display:none}.welcome-desk{padding:24px}}
+@media(max-width:760px){
+ .arena-welcome{grid-template-columns:1fr;border-radius:10px;min-height:0}
+ .entrance-board{padding:24px 22px 17px}
+ .entrance-board h1{font-size:38px;letter-spacing:-1.1px;margin:14px 0 11px}
+ .entrance-board h1 br{display:none}.entrance-board-heading p{font-size:14px;line-height:1.6}.entrance-board-heading p br{display:none}
+ .welcome-player-count{font-size:13px}
+ .welcome-table{min-height:232px;padding:16px 0 28px}
+ .welcome-tile-row .game-tile{width:36px;height:41px;font-size:26px;border-radius:6px}.welcome-tile-row{gap:5px}
+ .welcome-word-label{font-size:14px;margin-bottom:6px}.welcome-chain-connector{height:29px;font-size:13px}
+ .welcome-seat{width:56px;bottom:32px;font-size:14px}.welcome-seat .character-token{width:48px;height:54px}.welcome-seat>span:not(.welcome-hearts){display:none}
+ .welcome-open-seat{width:40px;height:46px;border-radius:7px}.welcome-open-seat svg{width:21px}.welcome-hearts svg{width:11px}
+ .welcome-next-example{font-size:13px;bottom:-2px}.entrance-board-rules{font-size:14px;padding-top:13px;margin-top:7px;gap:6px}.entrance-board-rules svg{width:12px}
+ .welcome-desk{padding:23px}.welcome-desk-heading{display:none}.welcome-desk h2{font-size:27px;margin:0 0 17px}
+ .welcome-desk .menu-play{min-height:65px}.welcome-desk .menu-play strong{font-size:24px}.welcome-desk .quick-alternatives button{min-height:70px}
+ .welcome-tutorial{margin-top:17px}.arena-first .lobby-disclosure{margin-top:15px}
+ .shell.arena-first>header{padding-block:10px;gap:10px;flex-wrap:nowrap}
+ .shell.arena-first>header>.brand{flex:1 1 auto;justify-content:flex-start;margin:0;font-size:16px}
+ .shell.arena-first>header>.header-controls{margin:0;gap:4px}
+ .shell.arena-first>header>.header-controls>.sound{display:grid;place-items:center;width:36px;min-width:36px;min-height:44px;padding:8px}
+ .shell.arena-first .logo-tile{width:31px;height:35px;font-size:23px}
+}
+@media(max-width:380px){.welcome-seat-rival{right:-5px}.welcome-seat-you{left:-5px}.welcome-tile-row .game-tile{width:31px;height:37px;font-size:23px}.welcome-table{min-height:217px}.entrance-board{padding-inline:16px}.welcome-desk{padding:20px}}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) .welcome-tile-row .game-tile{animation:none}}
+html[data-motion=reduced] .welcome-tile-row .game-tile{animation:none}
+.arena-first .welcome-desk .quick-setup .name-field{background:none;border:0;box-shadow:none;padding:0;border-radius:0}
+.arena-first .welcome-desk .quick-setup .name-field input{margin-top:8px;min-height:51px;padding:12px 14px;line-height:1.4;border:1px solid var(--line);background:var(--surface-soft)}
+html:has(.arena-first){min-width:0}
+@media(max-width:760px){
+ .entrance-board{padding:19px 19px 14px}
+ .entrance-board h1{font-size:32px;margin:12px 0 9px}
+ .welcome-table{min-height:195px;padding-top:12px;padding-bottom:28px}
+ .welcome-seat{bottom:29px}
+ .welcome-desk{padding:20px}
+ .welcome-desk h2{display:none}
+ .welcome-desk .menu-play strong{font-size:24px}
+ .welcome-desk .menu-play small{font-size:13px}
+ .entrance-board-rules{padding-top:12px;margin-top:3px}
+}
+
+.welcome-desk .quick-alternatives b{color:var(--ink)}
+.welcome-desk:has(.menu-setup-heading)>h2{display:none}
+.welcome-desk .menu-setup-heading h2{display:block}
+
+@media(max-width:380px){.shell.arena-first>header>.brand .brand-wordmark{display:none}}
+
+.welcome-desk .quick-alternatives button{border:1px solid var(--line);background:var(--surface);min-height:64px;flex-direction:row;gap:9px}
+.welcome-desk .quick-alternatives button:first-child,.welcome-desk .quick-alternatives button:last-child{background:var(--surface)}
+.welcome-desk .quick-alternatives button:hover{background:var(--surface-soft)}
+.entrance-board-heading p{max-width:36ch;font-size:17px;line-height:1.6}
+.entrance-board-heading p br{display:none}
+.welcome-desk .menu-play strong{font-weight:700;letter-spacing:-.4px}
+@media(max-width:760px){.entrance-board-heading p{font-size:15px}.entrance-board h1{font-size:35px}.welcome-table{min-height:204px}.welcome-seat{width:62px;font-size:12px}.welcome-seat-rival{right:-6px}.welcome-seat-you{left:-6px}.entrance-board-rules{font-size:12px;flex-wrap:wrap;justify-content:center;gap:8px 16px}.welcome-desk .menu-play strong{font-size:24px}.welcome-desk .quick-alternatives b{font-size:14px}.welcome-tutorial b{font-size:15px}.welcome-desk .setup-footer{font-size:13px;flex-wrap:wrap}}

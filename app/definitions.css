@@ -1,0 +1,43 @@
+/* A margin note in the word trail: no modal, focus trap, or ticking live region. */
+.word-meaning{min-width:0;color:var(--ink)}
+.word-meaning>summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;border-radius:4px;text-align:left;touch-action:manipulation}
+.word-meaning>summary::-webkit-details-marker{display:none}
+.word-meaning>summary>b{flex:1;min-width:0;overflow-wrap:anywhere;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
+.word-meaning>summary>svg{flex:none;color:var(--green)}
+.word-meaning>summary:hover>b,.word-meaning[open]>summary>b{text-decoration-color:var(--green)}
+.word-meaning>summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.word-meaning[open]>summary{color:var(--green)}
+.word-meaning-body{margin:2px 0 12px;border-left:2px solid var(--green);padding:0 0 0 12px;text-align:left;font-family:var(--font-ui,'DM Sans',sans-serif);font-size:13px;font-weight:400;line-height:1.55}
+.definition-panel{min-width:0;overflow-wrap:anywhere;color:var(--ink)}
+.definition-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.definition-heading h3{margin:0;font:700 22px/1.2 var(--font-display);color:var(--ink);text-transform:none;letter-spacing:0;overflow-wrap:anywhere}
+.definition-panel .definition-close{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;background:transparent;color:var(--muted);border:0;box-shadow:none}
+.definition-panel p{margin:6px 0 10px;color:var(--ink);font-size:13px;line-height:1.55}
+.definition-panel .definition-clock-note{color:var(--green);font-size:12px;font-weight:600;margin:0 0 10px}
+.definition-select{display:grid;gap:4px;margin:8px 0;color:var(--muted);font-size:12px}
+.definition-select select{width:100%;min-width:0;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink);font-size:16px}
+.definition-panel .definition-language{font-size:11px;color:var(--muted)}
+.definition-panel .definition-senses{display:grid;gap:8px;margin:8px 0 14px;padding:0 0 0 20px;max-height:none;overflow:visible;list-style:decimal}
+.definition-panel .definition-senses>li{display:list-item;min-width:0;padding:0;border:0;background:none;border-radius:0;box-shadow:none;color:var(--ink);font-size:13px}
+.definition-senses>li>span{color:var(--muted);font-size:11px;text-transform:lowercase}
+.definition-senses>li>p{margin:0}
+.definition-panel .definition-numeral,.definition-panel .definition-spelling-note{font-size:12px}
+.definition-links{display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px}
+.definition-links a{display:inline-flex;align-items:center;gap:5px;min-height:44px;color:var(--green);font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.definition-credit{display:block;margin:4px 0 0;color:var(--muted);font-size:10px;line-height:1.6}
+.definition-credit a{color:inherit;text-decoration:underline}
+.trail .trail-learning-hint{margin:0;padding:0 19px 8px;color:var(--muted);font-size:11px;line-height:1.5}
+.word-list>.word-meaning{border-bottom:1px solid var(--line)}
+.word-list>.word-meaning>summary>span{flex:none}
+.arena-side .match-sidebar .trail:has(.word-meaning[open]){height:auto;max-height:520px}
+.trail:has(.word-meaning[open]) .word-list{max-height:380px;flex:auto}
+.daily-trail>ol>li:has(.word-meaning),.watch-trail>ol>li:has(.word-meaning){display:block;min-width:0}
+.daily-trail>ol>li:has(.word-meaning){background:var(--surface);color:var(--ink);box-shadow:0 2px 0 var(--line)}
+.watch-trail .word-meaning>summary>span{color:var(--muted);font-size:11px;max-width:40%;overflow-wrap:anywhere}
+.daily-trail>ol:has(.word-meaning[open]){display:block}
+.daily-trail>ol>li:has(.word-meaning[open]){width:100%;margin-top:8px}
+.watch-trail>ol>li:has(.word-meaning[open]){flex-basis:100%;width:100%}
+.word-learning-hint{color:var(--muted);font-size:12px;line-height:1.5}
+.result-card dl:has(.word-meaning[open]){grid-template-columns:minmax(0,1fr)}
+.result-card dd .word-meaning>summary{font-family:var(--font-display);font-size:20px}
+.result-card .word-learning-hint{margin:0 0 10px;font-size:12px;color:var(--muted)}

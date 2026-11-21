@@ -1,0 +1,41 @@
+import fs from 'node:fs';
+import Module,{createRequire} from 'node:module';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+const require=createRequire(import.meta.url);
+for(const ext of ['.ts','.tsx'])Module._extensions[ext]=(m,file)=>m._compile(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2023,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText,file);
+const React=require('react'),original={useState:React.useState,useEffect:React.useEffect,useRef:React.useRef,useId:React.useId};
+const Panel=require('../app/word-definition.tsx').default,Meaning=require('../app/word-meaning.tsx').default;
+let values=[],effects=[],refs=[],cursor=0,effectCursor=0,refCursor=0,pending=[],tree,requests=[],closed=0;
+const nodes=node=>!node||typeof node!=='object'?[]:[node,...React.Children.toArray(node.props?.children).flatMap(nodes)];
+const text=node=>typeof node==='string'||typeof node==='number'?String(node):React.Children.toArray(node?.props?.children).map(text).join('');
+React.useState=initial=>{const i=cursor++;if(!(i in values))values[i]=typeof initial==='function'?initial():initial;return[values[i],v=>values[i]=typeof v==='function'?v(values[i]):v]};
+React.useRef=initial=>refs[refCursor++]??={current:initial};React.useId=()=>'meaning-test';
+React.useEffect=(fn,deps)=>{const i=effectCursor++,old=effects[i];if(!old||deps.some((v,j)=>v!==old.deps[j]))pending.push(()=>{old?.cleanup?.();effects[i]={deps,cleanup:fn()}})};
+const originalFetch=globalThis.fetch;globalThis.fetch=(url,options)=>new Promise((resolve,reject)=>requests.push({url,options,resolve,reject}));
+function render(component=Panel,props={word:'pie',live:true,onClose(){closed++}}){cursor=effectCursor=refCursor=0;pending=[];tree=component(props);pending.forEach(fn=>fn());return tree;}
+const flush=async()=>{for(let i=0;i<8;i++)await Promise.resolve();render();};
+const entry=(language,meaning)=>({word:'pie',language,languages:['en','es'],headword:'pie',spellings:['pie'],sourceUrl:`https://en.wiktionary.org/wiki/pie#${language==='es'?'Spanish':'English'}`,searchUrl:'https://en.wiktionary.org/wiki/Special:Search?search=pie',status:'found',senses:[{partOfSpeech:'Noun',meaning}]});
+try{
+ render();assert.equal(requests.length,1);assert(text(tree).includes('Looking up pie'));assert(text(tree).includes('clock keeps running'));assert.equal(requests[0].options.credentials,'same-origin');
+ requests[0].resolve(Response.json(entry('en','An English meaning.')));await flush();assert(text(tree).includes('An English meaning.'));assert(text(tree).includes('CC BY-SA 4.0'));assert(text(tree).includes('formatting removed'));
+ let language=nodes(tree).find(n=>n.type==='select');language.props.onChange({target:{value:'es'}});render();assert.equal(requests.length,2);assert(requests[1].url.includes('language=es'));assert(requests[0].options.signal.aborted);
+ assert(nodes(tree).some(n=>n.type==='select'),'Keep language control mounted while loading');
+ language=nodes(tree).find(n=>n.type==='select');language.props.onChange({target:{value:'en'}});render();assert.equal(requests.length,3);assert(requests[1].options.signal.aborted);
+ requests[2].resolve(Response.json(entry('en','Current response.')));await flush();
+ requests[1].resolve(Response.json(entry('es','Stale response.')));await flush();assert(text(tree).includes('Current response.'));assert(!text(tree).includes('Stale response.'));
+ nodes(tree).find(n=>n.type==='select').props.onChange({target:{value:'es'}});render();requests.at(-1).reject(Error('Offline'));await flush();assert(text(tree).includes('unavailable right now'));assert(nodes(tree).some(n=>n.type==='a'&&n.props.target==='_blank'));
+ nodes(tree).find(n=>n.type==='button'&&text(n)==='Try again').props.onClick();render();requests.at(-1).resolve(Response.json({...entry('es',''),status:'missing',senses:[],spellings:['pie','pié']}));await flush();assert(text(tree).includes('still accepted'));assert.equal(nodes(tree).filter(n=>n.type==='select').length,2);
+ nodes(tree).filter(n=>n.type==='select')[1].props.onChange({target:{value:'pié'}});render();assert(requests.at(-1).url.includes('spelling=pi%C3%A9'));
+ nodes(tree).find(n=>n.props?.['aria-label']==='Close definition').props.onClick();assert.equal(closed,1);
+ effects.forEach(e=>e.cleanup?.());assert(requests.at(-1).options.signal.aborted);
+ values=[];effects=[];refs=[];
+ const props={word:'apple',live:true};render(Meaning,props);assert(!nodes(tree).some(n=>n.type===React.Suspense));
+ tree.props.onToggle({currentTarget:{open:true}});render(Meaning,props);assert(nodes(tree).some(n=>n.type===React.Suspense));
+ let focused=0,prevented=0,stopped=0;refs[0].current={open:true,querySelector(){return{focus(options){focused++;assert(options.preventScroll)}}}};
+ tree.props.onKeyDown({key:'Escape',preventDefault(){prevented++},stopPropagation(){stopped++}});assert.equal(focused,1);assert.equal(prevented,1);assert.equal(stopped,1);assert.equal(refs[0].current.open,false);
+ render(Meaning,props);assert(!nodes(tree).some(n=>n.type===React.Suspense));
+ const home=fs.readFileSync('app/page.tsx','utf8');assert(home.includes("focused.closest('[data-word-meaning]')"));assert(home.includes('<ArenaWordTrail'));assert(fs.readFileSync('app/arena-word-trail.tsx','utf8').includes('word={w.word} live={active}'));
+ const css=fs.readFileSync('app/definitions.css','utf8');assert(css.includes('min-height:44px'));assert(css.includes('font-size:16px'));assert(css.includes('overflow-wrap:anywhere'));assert(!css.includes('position:fixed'));
+ console.log('PASS: on-demand disclosure, load/success/missing/offline/retry, language/spelling controls, stale-response rejection, request cancellation, Escape focus return, live clock notice, and mobile-size style guards. Simulated interactions; no browser layout assertions.');
+}finally{effects.forEach(e=>e.cleanup?.());Object.assign(React,original);globalThis.fetch=originalFetch;}
